@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasir Wi-Fi Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5; /* Indigo */
+            --primary-grad: linear-gradient(135deg, #4f46e5, #3b82f6);
+            --bg-color: #f3f4f6;
+            --surface: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --danger: #ef4444;
+            --danger-bg: #fee2e2;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,0.03) 0, transparent 50%), 
+                              radial-gradient(at 50% 0%, hsla(225,39%,30%,0.03) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, hsla(339,49%,30%,0.03) 0, transparent 50%);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.025em;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            background-color: #f9fafb;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .result-box {
+            background: var(--primary-grad);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            margin: 1.5rem 0;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        .result-box span {
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .result-box strong {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        button.btn-submit {
+            width: 100%;
+            background: var(--text-main);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        button.btn-submit:hover {
+            background: #1f2937;
+        }
+
+        button.btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Styling Riwayat */
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+        
+        .history-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .day-header {
+            background: #f8fafc;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .day-header .date-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .day-header .date {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        
+        .day-header .vcr-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.1rem;
+        }
+
+        .day-header .day-total {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .trx-list {
+            padding: 0.5rem 1.25rem;
+        }
+
+        .trx-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        
+        .trx-item:last-child {
+            border-bottom: none;
+        }
+
+        .trx-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .trx-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trx-name {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .trx-qty {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .trx-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .trx-price {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn-del-sm {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: none;
+            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-del-sm:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .total-all {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--text-main);
+            color: white;
+            border-radius: var(--radius-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .total-all span {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+        
+        .total-all strong {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Kartu Form Input -->
+        <div class="card">
+            <div class="header">
+                <h1>Kasir Wi-Fi</h1>
+                <div class="badge">Tarif: Rp 3.000 / Voucher</div>
+            </div>
+
+            <div class="form-group">
+                <label for="tanggal">Tanggal Transaksi</label>
+                <input type="date" id="tanggal">
+            </div>
+
+            <div class="form-group">
+                <label for="nama">Nama Pelanggan</label>
+                <input type="text" id="nama" placeholder="Contoh: Budi" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="jumlah">Jumlah Voucher</label>
+                <input type="number" id="jumlah" placeholder="Contoh: 1" min="1">
+            </div>
+
+            <div class="result-box">
+                <span>Estimasi Pendapatan</span>
+                <strong id="total-preview">Rp 0</strong>
+            </div>
+
+            <button class="btn-submit" onclick="simpanData()">Catat Penjualan</button>
+        </div>
+
+        <!-- Kartu Riwayat -->
+        <div class="card">
+            <div class="history-header">
+                <h3>Riwayat Penjualan</h3>
+            </div>
+            
+            <div class="history-list" id="daftar-riwayat">
+                <!-- Data riwayat akan muncul di sini -->
+            </div>
+
+            <div class="total-all">
+                <span>Total Keseluruhan</span>
+                <strong id="total-semua">Rp 0</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const HARGA = 3000;
+        const inputTanggal = document.getElementById('tanggal');
+        const inputNama = document.getElementById('nama');
+        const inputJumlah = document.getElementById('jumlah');
+        const previewTotal = document.getElementById('total-preview');
+        const daftarRiwayat = document.getElementById('daftar-riwayat');
+        const tampilTotalSemua = document.getElementById('total-semua');
+
+        // Set tanggal default ke hari ini
+        const setTanggalHariIni = () => {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            inputTanggal.value = `${yyyy}-${mm}-${dd}`;
+        };
+        setTanggalHariIni();
+
+        // Format Rupiah
+        const formatRupiah = (angka) => {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(angka);
+        };
+
+        // Format Tanggal
+        const formatTanggalTampil = (tglStr) => {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(tglStr).toLocaleDateString('id-ID', options);
+        };
+
+        // Ambil huruf pertama untuk Avatar
+        const getInisial = (nama) => {
+            return nama.charAt(0).toUpperCase();
+        };
+
+        // Auto hitung total bayar
+        inputJumlah.addEventListener('input', (e) => {
+            const jumlah = parseInt(e.target.value) || 0;
+            previewTotal.textContent = formatRupiah(jumlah * HARGA);
+        });
+
+        // Ambil data dari Local Storage
+        let dataPenjualan = JSON.parse(localStorage.getItem('rekapWifiDetail')) || {};
+
+        // Fungsi Simpan Data
+        function simpanData() {
+            const tanggal = inputTanggal.value;
+            const nama = inputNama.value.trim() || 'Hamba Allah'; 
+            const jumlahInput = parseInt(inputJumlah.value) || 0;
+
+            if (!tanggal || jumlahInput <= 0) {
+                alert("Mohon isi jumlah voucher minimal 1.");
+                return;
+            }
+
+            if (!dataPenjualan[tanggal]) {
+                dataPenjualan[tanggal] = [];
+            }
+
+            // Masukkan data pelanggan (Tambahkan di urutan paling atas hari itu menggunakan unshift)
+            dataPenjualan[tanggal].unshift({
+                id: Date.now(), 
+                nama: nama,
+                jumlah: jumlahInput,
+                totalBayar: jumlahInput * HARGA
+            });
+
+            // Simpan ke browser
+            localStorage.setItem('rekapWifiDetail', JSON.stringify(dataPenjualan));
+
+            // Reset Form
+            inputNama.value = '';
+            inputJumlah.value = '';
+            previewTotal.textContent = 'Rp 0';
+            
+            // Kursor otomatis fokus
+            inputNama.focus();
+
+            renderRiwayat();
+        }
+
+        // Fungsi Hapus Satu Transaksi
+        function hapusTransaksi(tanggal, idTransaksi) {
+            if(confirm("Hapus transaksi ini?")) {
+                dataPenjualan[tanggal] = dataPenjualan[tanggal].filter(trx => trx.id !== idTransaksi);
+                
+                if(dataPenjualan[tanggal].length === 0) {
+                    delete dataPenjualan[tanggal];
+                }
+
+                localStorage.setItem('rekapWifiDetail', JSON.stringify(dataPenjualan));
+                renderRiwayat();
+            }
+        }
+
+        // Fungsi Tampilkan Riwayat
+        function renderRiwayat() {
+            daftarRiwayat.innerHTML = ''; 
+            let totalSemuaWaktu = 0;
+
+            // Ambil semua tanggal dan urutkan dari yang terbaru
+            const arrayTanggal = Object.keys(dataPenjualan).sort((a, b) => new Date(b) - new Date(a));
+
+            if (arrayTanggal.length === 0) {
+                daftarRiwayat.innerHTML = `
+                <div style="text-align:center; padding: 2rem 0; color:var(--text-muted);">
+                    <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-bottom:10px; opacity:0.5;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p style="font-size:0.9rem;">Belum ada catatan penjualan</p>
+                </div>`;
+                tampilTotalSemua.textContent = 'Rp 0';
+                return;
+            }
+
+            arrayTanggal.forEach(tgl => {
+                const transaksiHariIni = dataPenjualan[tgl];
+                let totalUangHariIni = 0;
+                let totalVoucherHariIni = 0;
+                
+                let listHtml = '';
+                transaksiHariIni.forEach(trx => {
+                    totalUangHariIni += trx.totalBayar;
+                    totalVoucherHariIni += trx.jumlah;
+                    totalSemuaWaktu += trx.totalBayar;
+
+                    listHtml += `
+                        <div class="trx-item">
+                            <div class="trx-info">
+                                <div class="avatar">${getInisial(trx.nama)}</div>
+                                <div class="trx-details">
+                                    <span class="trx-name">${trx.nama}</span>
+                                    <span class="trx-qty">${trx.jumlah} Voucher</span>
+                                </div>
+                            </div>
+                            <div class="trx-action">
+                                <span class="trx-price">${formatRupiah(trx.totalBayar)}</span>
+                                <button class="btn-del-sm" onclick="hapusTransaksi('${tgl}', ${trx.id})" title="Hapus">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const dayCard = document.createElement('div');
+                dayCard.className = 'day-card';
+                dayCard.innerHTML = `
+                    <div class="day-header">
+                        <div class="date-info">
+                            <span class="date">${formatTanggalTampil(tgl)}</span>
+                            <span class="vcr-count">Total ${totalVoucherHariIni} Voucher Terjual</span>
+                        </div>
+                        <div class="day-total">${formatRupiah(totalUangHariIni)}</div>
+                    </div>
+                    <div class="trx-list">
+                        ${listHtml}
+                    </div>
+                `;
+                
+                daftarRiwayat.appendChild(dayCard);
+            });
+
+            tampilTotalSemua.textContent = formatRupiah(totalSemuaWaktu);
+        }
+
+        // Render pertama kali
+        renderRiwayat();
+    </script>
+</body>
+</html>
