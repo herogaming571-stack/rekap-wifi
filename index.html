@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5; /* Indigo */
+            --primary: #4f46e5;
             --primary-grad: linear-gradient(135deg, #4f46e5, #3b82f6);
             --bg-color: #f3f4f6;
             --surface: #ffffff;
@@ -340,20 +340,21 @@
 
             <div class="form-group">
                 <label for="nama">Nama Pelanggan</label>
-                <input type="text" id="nama" placeholder="Contoh: Budi" autocomplete="off">
+                <input type="text" id="nama" placeholder="Contoh: Budi" autocomplete="off" autofocus>
             </div>
 
             <div class="form-group">
                 <label for="jumlah">Jumlah Voucher</label>
-                <input type="number" id="jumlah" placeholder="Contoh: 1" min="1">
+                <!-- Nilai value langsung diset "1" -->
+                <input type="number" id="jumlah" placeholder="Contoh: 1" min="1" value="1">
             </div>
 
             <div class="result-box">
                 <span>Estimasi Pendapatan</span>
-                <strong id="total-preview">Rp 0</strong>
+                <strong id="total-preview">Rp 3.000</strong>
             </div>
 
-            <button class="btn-submit" onclick="simpanData()">Catat Penjualan</button>
+            <button class="btn-submit" onclick="simpanData()" id="btn-catat">Catat Penjualan</button>
         </div>
 
         <!-- Kartu Riwayat -->
@@ -381,6 +382,7 @@
         const previewTotal = document.getElementById('total-preview');
         const daftarRiwayat = document.getElementById('daftar-riwayat');
         const tampilTotalSemua = document.getElementById('total-semua');
+        const btnCatat = document.getElementById('btn-catat');
 
         // Set tanggal default ke hari ini
         const setTanggalHariIni = () => {
@@ -412,10 +414,25 @@
             return nama.charAt(0).toUpperCase();
         };
 
-        // Auto hitung total bayar
+        // Auto hitung total bayar (jika sewaktu-waktu jumlahnya diganti)
         inputJumlah.addEventListener('input', (e) => {
             const jumlah = parseInt(e.target.value) || 0;
             previewTotal.textContent = formatRupiah(jumlah * HARGA);
+        });
+
+        // Fitur tekan "Enter" di keyboard HP/PC langsung catat (Biar tidak capek klik tombol)
+        inputNama.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                btnCatat.click();
+            }
+        });
+        
+        inputJumlah.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                btnCatat.click();
+            }
         });
 
         // Ambil data dari Local Storage
@@ -436,7 +453,7 @@
                 dataPenjualan[tanggal] = [];
             }
 
-            // Masukkan data pelanggan (Tambahkan di urutan paling atas hari itu menggunakan unshift)
+            // Masukkan data pelanggan
             dataPenjualan[tanggal].unshift({
                 id: Date.now(), 
                 nama: nama,
@@ -447,12 +464,12 @@
             // Simpan ke browser
             localStorage.setItem('rekapWifiDetail', JSON.stringify(dataPenjualan));
 
-            // Reset Form
+            // Reset Form (Jumlah kembali jadi 1 otomatis)
             inputNama.value = '';
-            inputJumlah.value = '';
-            previewTotal.textContent = 'Rp 0';
+            inputJumlah.value = '1';
+            previewTotal.textContent = formatRupiah(HARGA);
             
-            // Kursor otomatis fokus
+            // Kursor otomatis fokus lagi ke Nama
             inputNama.focus();
 
             renderRiwayat();
@@ -477,7 +494,6 @@
             daftarRiwayat.innerHTML = ''; 
             let totalSemuaWaktu = 0;
 
-            // Ambil semua tanggal dan urutkan dari yang terbaru
             const arrayTanggal = Object.keys(dataPenjualan).sort((a, b) => new Date(b) - new Date(a));
 
             if (arrayTanggal.length === 0) {
