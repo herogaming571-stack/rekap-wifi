@@ -313,24 +313,16 @@
         import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         // ==========================================
-        // GANTI BAGIAN INI DENGAN FIREBASE CONFIG MU
+        // FIREBASE CONFIG MILIKMU
         // ==========================================
         const firebaseConfig = {
-            apiKey: "firebaseConfig = { 
-  apiKey : "AIzaSyDVVNrVrW46U8qQdgXSbjqUh6MZgWGd2zc" , 
-  authDomain : "smart-relay-esp32-e285e.firebaseapp.com" , 
-  URL basis data : "https://smart-relay-esp32-e285e-default-rtdb.asia-southeast1.firebasedatabase.app" , 
-  ID proyek : "smart-relay-esp32-e285e" , 
-  storageBucket : "smart-relay-esp32-e285e.firebasestorage.app" , 
-  messagingSenderId : "439506799534" , 
-  appId : "1:439506799534:web:65b2d29db56737f43f963f" 
-}",
-            authDomain: "smart-relay-esp32-XXX.firebaseapp.com",
-            databaseURL: "https://smart-relay-esp32-XXX.firebaseio.com",
-            projectId: "smart-relay-esp32",
-            storageBucket: "smart-relay-esp32-XXX.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456:web:12345"
+            apiKey: "AIzaSyDVVNrVrW46U8qQdgXSbjqUh6MZgWGd2zc",
+            authDomain: "smart-relay-esp32-e285e.firebaseapp.com",
+            databaseURL: "https://smart-relay-esp32-e285e-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "smart-relay-esp32-e285e",
+            storageBucket: "smart-relay-esp32-e285e.firebasestorage.app",
+            messagingSenderId: "439506799534",
+            appId: "1:439506799534:web:65b2d29db56737f43f963f"
         };
         // ==========================================
 
@@ -377,15 +369,15 @@
                 return;
             }
 
-            // Path penyimpanan: KasirWiFi/Penjualan/2026-09-21/id_unik
+            // Path penyimpanan: KasirWiFi/Penjualan/YYYY-MM-DD/id_unik
             const hariRef = ref(db, `KasirWiFi/Penjualan/${tanggal}`);
-            const dataBaruRef = push(hariRef); // Buat ID unik acak
+            const dataBaruRef = push(hariRef); 
             
             set(dataBaruRef, {
                 nama: nama,
                 jumlah: jumlahInput,
                 totalBayar: jumlahInput * HARGA,
-                waktu: Date.now() // Untuk mengurutkan data
+                waktu: Date.now() 
             });
 
             // Reset UI
@@ -399,7 +391,7 @@
         inputNama.addEventListener("keypress", (e) => { if (e.key === "Enter") simpanData(); });
         inputJumlah.addEventListener("keypress", (e) => { if (e.key === "Enter") simpanData(); });
 
-        // Fungsi Hapus Data (Harus didaftarkan ke window agar bisa dipanggil dari HTML yang di-generate)
+        // Fungsi Hapus Data
         window.hapusTransaksi = (tanggal, idUnik) => {
             if(confirm("Yakin hapus pelanggan ini?")) {
                 remove(ref(db, `KasirWiFi/Penjualan/${tanggal}/${idUnik}`));
