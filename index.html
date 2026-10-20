@@ -3,477 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kasir Wi-Fi Cloud</title>
+    <title>Kas WiFi Warga / Kelas</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-grad: linear-gradient(135deg, #4f46e5, #3b82f6);
-            --bg-color: #f3f4f6;
-            --surface: #ffffff;
-            --text-main: #111827;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
+            --primary: #3b82f6; 
+            --primary-dark: #1d4ed8;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
             --danger: #ef4444;
-            --danger-bg: #fee2e2;
-            --radius-lg: 20px;
-            --radius-md: 12px;
+            --border: #e5e7eb;
+            --success: #10b981;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,0.03) 0, transparent 50%), 
-                              radial-gradient(at 50% 0%, hsla(225,39%,30%,0.03) 0, transparent 50%), 
-                              radial-gradient(at 100% 0%, hsla(339,49%,30%,0.03) 0, transparent 50%);
-            color: var(--text-main);
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 460px;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1.75rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .cloud-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #dcfce7;
-            color: #166534;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .cloud-status.offline {
-            background: #fef08a;
-            color: #854d0e;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-md);
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.2s;
-            background-color: #f9fafb;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-            background-color: #fff;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-
-        .result-box {
-            background: var(--primary-grad);
-            padding: 1.25rem;
-            border-radius: var(--radius-md);
-            text-align: center;
-            margin: 1.5rem 0;
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-        }
-
-        .result-box span {
-            display: block;
-            font-size: 0.85rem;
-            opacity: 0.9;
-            margin-bottom: 0.25rem;
-        }
-
-        .result-box strong {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        button.btn-submit {
-            width: 100%;
-            background: var(--text-main);
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        button.btn-submit:hover { background: #1f2937; }
-        button.btn-submit:active { transform: scale(0.98); }
-
-        /* Riwayat Styling */
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 1rem; padding-bottom: 3rem; }
         
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .day-card {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-        }
-
-        .day-header {
-            background: #f8fafc;
-            padding: 0.75rem 1.25rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .day-header .date {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+        .container { max-width: 500px; margin: 0 auto; }
         
-        .day-header .vcr-count {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .header-title { text-align: center; margin-bottom: 1rem; }
+        .header-title h1 { font-size: 1.5rem; font-weight: 700; color: var(--primary-dark); }
+        .header-title p { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+        .badge-price { display: inline-block; background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-weight: 700; margin-top: 8px; font-size: 0.85rem;}
 
-        .day-header .day-total {
-            font-weight: 700;
-            color: var(--primary);
-        }
+        .tabs { display: flex; gap: 10px; margin-bottom: 1.5rem; background: #e5e7eb; padding: 5px; border-radius: 12px; }
+        .tab-btn { flex: 1; text-align: center; padding: 10px; border: none; background: transparent; border-radius: 8px; font-weight: 600; cursor: pointer; color: var(--muted); transition: 0.3s; }
+        .tab-btn.active { background: var(--card); color: var(--primary-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-        .trx-list { padding: 0.5rem 1.25rem; }
-
-        .trx-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px dashed var(--border);
-        }
+        .card { background: var(--card); border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
         
-        .trx-item:last-child { border-bottom: none; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+        .form-group select, .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; background: white; }
+        
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s; color: white; }
+        .btn-blue { background: var(--primary); }
+        .btn-blue:hover { background: var(--primary-dark); }
+        .btn-green { background: var(--success); }
+        .btn-red { background: var(--danger); }
+        
+        .week-selector { background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+        .week-selector label { font-weight: 700; color: var(--text); font-size: 0.85rem;}
+        .week-selector select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.95rem; font-weight: 600; outline: none; background: white; }
 
-        .trx-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        /* Kotak Hasil Per Minggu */
+        .summary-week-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 12px; border-radius: 8px; margin-bottom: 1rem; text-align: center; }
+        .summary-week-box h4 { font-size: 0.85rem; color: #1e40af; margin-bottom: 4px; }
+        .summary-week-amount { font-size: 1.2rem; font-weight: 800; color: #1d4ed8; }
 
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #e0e7ff;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
+        .student-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 1rem; }
+        .student-item { display: flex; flex-direction: column; padding: 12px; background: #f9fafb; border: 1px solid var(--border); border-radius: 8px; gap: 6px; }
+        .student-header { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; }
+        .student-name { font-size: 0.85rem; font-weight: 700; word-break: break-word; flex: 1; }
+        
+        .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+        .lunas { background: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+        .belum { background: #f3f4f6; color: var(--muted); border: 1px solid var(--border); }
 
-        .trx-name { font-weight: 600; font-size: 0.9rem; }
-        .trx-qty { color: var(--text-muted); font-size: 0.75rem; display: block; }
-        .trx-action { display: flex; align-items: center; gap: 12px; }
-        .trx-price { font-weight: 600; font-size: 0.9rem; }
-
-        .btn-del-sm {
-            background: var(--danger-bg);
-            color: var(--danger);
-            border: none;
-            border-radius: 8px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .btn-del-sm:hover { background: var(--danger); color: white; }
-
-        .total-all {
-            margin-top: 1.5rem;
-            padding: 1.25rem;
-            background: var(--text-main);
-            color: white;
-            border-radius: var(--radius-md);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .btn-sm { padding: 6px 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; color: white; font-size: 0.8rem; }
+        
+        #panel-admin { display: none; }
+        #login-screen { text-align: center; padding: 2rem 0; }
+        #dashboard-admin { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Input Kasir -->
+<div class="container">
+    <div class="header-title">
+        <h1>Pembayaran Kas WiFi</h1>
+        <p>Sistem Kontrol Iuran WiFi Bulanan/Mingguan</p>
+        <div class="badge-price">Tarif: Rp 10.000 / Periode</div>
+    </div>
+
+    <!-- Navigasi Tab -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('publik')" id="btn-tab-publik">👁️ Cek Status (Publik)</button>
+        <button class="tab-btn" onclick="switchTab('admin')" id="btn-tab-admin">⚙️ Panel Pengurus</button>
+    </div>
+
+    <!-- ================= HALAMAN PUBLIK ================= -->
+    <div id="panel-publik">
         <div class="card">
-            <div class="header">
-                <h1>Kasir Wi-Fi</h1>
-                <div id="status-cloud" class="cloud-status offline">Memuat Database...</div>
-            </div>
-
-            <div class="form-group">
-                <label>Tanggal Transaksi</label>
-                <input type="date" id="tanggal">
-            </div>
-
-            <div class="form-group">
-                <label>Nama Pelanggan</label>
-                <input type="text" id="nama" placeholder="Contoh: Budi" autocomplete="off" autofocus>
-            </div>
-
-            <div class="form-group">
-                <label>Jumlah Voucher</label>
-                <input type="number" id="jumlah" placeholder="1" min="1" value="1">
-            </div>
-
-            <div class="result-box">
-                <span>Tarif: Rp 3.000 / Voucher</span>
-                <strong id="total-preview">Rp 3.000</strong>
-            </div>
-
-            <button class="btn-submit" id="btn-catat">Catat Penjualan</button>
-        </div>
-
-        <!-- Riwayat Cloud -->
-        <div class="card">
-            <div class="history-header">
-                <h3>Riwayat Penjualan (Cloud)</h3>
-            </div>
+            <h3>Daftar Status Pembayaran WiFi</h3>
             
-            <div class="history-list" id="daftar-riwayat">
-                <!-- Data dari Firebase akan muncul di sini otomatis -->
+            <div class="week-selector">
+                <div>
+                    <label>Pilih Bulan:</label>
+                    <select id="select-bulan-publik" onchange="updateListTanggalPublik()"></select>
+                </div>
+                <div>
+                    <label>Pilih Minggu / Periode:</label>
+                    <select id="select-minggu-publik" onchange="ubahMingguPublik(this.value)"></select>
+                </div>
             </div>
 
-            <div class="total-all">
-                <span>Total Seluruh Waktu</span>
-                <strong id="total-semua">Rp 0</strong>
+            <!-- Hasil Total Pendapatan Minggu Ini -->
+            <div class="summary-week-box">
+                <h4 id="label-periode-aktif">Total Terkumpul Minggu Ini:</h4>
+                <div class="summary-week-amount" id="total-minggu-publik">Rp 0</div>
             </div>
+
+            <div class="student-grid" id="grid-status-publik"></div>
         </div>
     </div>
 
-    <!-- Import SDK Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    <!-- ================= HALAMAN ADMIN / PENGURUS ================= -->
+    <div id="panel-admin">
+        <div class="card" id="login-screen">
+            <h3>Login Pengurus WiFi</h3>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Kata Sandi:</label>
+                <input type="password" id="input-sandi" placeholder="Masukkan Sandi...">
+            </div>
+            <button class="btn btn-blue" onclick="prosesLogin()">Masuk</button>
+        </div>
 
-        // ==========================================
-        // FIREBASE CONFIG MILIKMU
-        // ==========================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDVVNrVrW46U8qQdgXSbjqUh6MZgWGd2zc",
-            authDomain: "smart-relay-esp32-e285e.firebaseapp.com",
-            databaseURL: "https://smart-relay-esp32-e285e-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "smart-relay-esp32-e285e",
-            storageBucket: "smart-relay-esp32-e285e.firebasestorage.app",
-            messagingSenderId: "439506799534",
-            appId: "1:439506799534:web:65b2d29db56737f43f963f"
-        };
-        // ==========================================
+        <div id="dashboard-admin">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <span style="font-size:0.8rem; font-weight:bold; color:var(--primary-dark);">✅ Mode Pengurus Aktif</span>
+                <button onclick="prosesLogout()" style="background:none; border:none; color:var(--danger); font-weight:bold; cursor:pointer;">Keluar</button>
+            </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+            <div class="card">
+                <h3>Kelola Status Pembayaran Warga</h3>
+                
+                <div class="week-selector" style="border-color: var(--primary);">
+                    <div>
+                        <label>Pilih Bulan:</label>
+                        <select id="select-bulan-admin" onchange="updateListTanggalAdmin()"></select>
+                    </div>
+                    <div>
+                        <label>Pilih Minggu / Periode:</label>
+                        <select id="select-minggu-admin" onchange="ubahMingguAdmin(this.value)"></select>
+                    </div>
+                </div>
+
+                <!-- Hasil Total Pendapatan Minggu Ini (Admin) -->
+                <div class="summary-week-box">
+                    <h4 id="label-periode-aktif-admin">Total Terkumpul Minggu Ini:</h4>
+                    <div class="summary-week-amount" id="total-minggu-admin">Rp 0</div>
+                </div>
+
+                <p style="font-size: 0.75rem; color: var(--muted); margin-bottom: 10px;">Klik tombol di bawah nama warga untuk mengubah status pembayaran secara instan:</p>
+
+                <div class="student-grid" id="grid-status-admin"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    
+    // Ganti dengan Config Firebase kamu
+    const firebaseConfig = {
+        apiKey: "AIzaSyDVVNrVrW46U8qQdgXSbjqUh6MZgWGd2zc",
+        authDomain: "smart-relay-esp32-e285e.firebaseapp.com",
+        databaseURL: "https://smart-relay-esp32-e285e-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "smart-relay-esp32-e285e",
+        storageBucket: "smart-relay-esp32-e285e.firebasestorage.app",
+        messagingSenderId: "439506799534",
+        appId: "1:439506799534:web:65b2d29db56737f43f963f"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const NOMINAL_WIFI = 10000; // Ubah tarif sesuai kebutuhan (misal 10rb)
+    const SANDI_ADMIN = "wifi2026"; // Sandi pengurus
+    
+    // Daftar nama pelanggan / warga wifi
+    const DAFTAR_WARGA = [
+        "Ahmad", "Budi", "Candra", "Dedi", "Eko", 
+        "Fajar", "Gilang", "Hadi", "Irfan", "Joko"
+    ];
+
+    const DATA_JADWAL = {
+        "September 2026": ["Minggu ke-1 Sep", "Minggu ke-2 Sep", "Minggu ke-3 Sep", "Minggu ke-4 Sep"],
+        "Oktober 2026": ["Minggu ke-1 Okt", "Minggu ke-2 Okt", "Minggu ke-3 Okt", "Minggu ke-4 Okt"]
+    };
+
+    let mingguAktif = "Minggu ke-1 Sep";
+    let semuaDataWifi = {};
+
+    const selBulanPublik = document.getElementById('select-bulan-publik');
+    const selMingguPublik = document.getElementById('select-minggu-publik');
+    const selBulanAdmin = document.getElementById('select-bulan-admin');
+    const selMingguAdmin = document.getElementById('select-minggu-admin');
+
+    Object.keys(DATA_JADWAL).forEach(bulan => {
+        let opt1 = document.createElement('option'); opt1.value = opt1.textContent = bulan;
+        let opt2 = document.createElement('option'); opt2.value = opt2.textContent = bulan;
+        selBulanPublik.appendChild(opt1); selBulanAdmin.appendChild(opt2);
+    });
+
+    window.updateListTanggalPublik = () => {
+        selMingguPublik.innerHTML = '';
+        DATA_JADWAL[selBulanPublik.value].forEach(tgl => {
+            let opt = document.createElement('option'); opt.value = opt.textContent = tgl;
+            if(tgl === mingguAktif) opt.selected = true;
+            selMingguPublik.appendChild(opt);
+        });
+    }
+
+    window.updateListTanggalAdmin = () => {
+        selMingguAdmin.innerHTML = '';
+        DATA_JADWAL[selBulanAdmin.value].forEach(tgl => {
+            let opt = document.createElement('option'); opt.value = opt.textContent = tgl;
+            if(tgl === mingguAktif) opt.selected = true;
+            selMingguAdmin.appendChild(opt);
+        });
+    }
+
+    selBulanPublik.value = "September 2026"; selBulanAdmin.value = "September 2026";
+    updateListTanggalPublik(); updateListTanggalAdmin();
+
+    window.switchTab = (tab) => {
+        document.getElementById('panel-publik').style.display = tab === 'publik' ? 'block' : 'none';
+        document.getElementById('panel-admin').style.display = tab === 'admin' ? 'block' : 'none';
+        document.getElementById('btn-tab-publik').classList.toggle('active', tab === 'publik');
+        document.getElementById('btn-tab-admin').classList.toggle('active', tab === 'admin');
+    }
+
+    window.ubahMingguPublik = (val) => { mingguAktif = val; selMingguAdmin.value = val; renderTampilan(); }
+    window.ubahMingguAdmin = (val) => { mingguAktif = val; selMingguPublik.value = val; renderTampilan(); }
+
+    window.prosesLogin = () => {
+        if(document.getElementById('input-sandi').value === SANDI_ADMIN) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard-admin').style.display = 'block';
+        } else {
+            alert("Sandi Salah!");
+        }
+    }
+
+    window.prosesLogout = () => {
+        document.getElementById('login-screen').style.display = 'block';
+        document.getElementById('dashboard-admin').style.display = 'none';
+        document.getElementById('input-sandi').value = "";
+    }
+
+    // Ambil Data Realtime dari Firebase
+    onValue(ref(db, 'KasWiFi'), (snapshot) => {
+        semuaDataWifi = snapshot.val() || {};
+        renderTampilan();
+    });
+
+    // Fungsi Render Tampilan & Hitung Total Perminggu
+    function renderTampilan() {
+        const gridPublik = document.getElementById('grid-status-publik');
+        const gridAdmin = document.getElementById('grid-status-admin');
+        gridPublik.innerHTML = ''; gridAdmin.innerHTML = '';
         
-        // Buat "kamar" khusus untuk aplikasi kasir di dalam Firebase
-        const dbRef = ref(db, 'KasirWiFi/Penjualan');
-
-        const HARGA = 3000;
-        const inputTanggal = document.getElementById('tanggal');
-        const inputNama = document.getElementById('nama');
-        const inputJumlah = document.getElementById('jumlah');
-        const previewTotal = document.getElementById('total-preview');
-        const daftarRiwayat = document.getElementById('daftar-riwayat');
-        const tampilTotalSemua = document.getElementById('total-semua');
-        const btnCatat = document.getElementById('btn-catat');
-        const statusCloud = document.getElementById('status-cloud');
-
-        // Set tanggal hari ini
-        const today = new Date();
-        const tglHariIni = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-        inputTanggal.value = tglHariIni;
-
-        // Formatter Uang & Tanggal
+        let totalOrangBayarMingguIni = 0;
         const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-        const formatTanggalTampil = (tglStr) => new Date(tglStr).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        const getInisial = (nama) => nama.charAt(0).toUpperCase();
 
-        // Hitung total real-time saat ngetik
-        inputJumlah.addEventListener('input', (e) => {
-            const jumlah = parseInt(e.target.value) || 0;
-            previewTotal.textContent = formatRupiah(jumlah * HARGA);
+        DAFTAR_WARGA.forEach(nama => {
+            const isLunas = semuaDataWifi[mingguAktif] ? semuaDataWifi[mingguAktif][nama] : false;
+            
+            if(isLunas) totalOrangBayarMingguIni++;
+
+            const badgeClass = isLunas ? 'lunas' : 'belum';
+            const teksStatus = isLunas ? 'SUDAH BAYAR' : 'BELUM BAYAR';
+            
+            // Tombol ubah status untuk admin
+            const btnWarna = isLunas ? 'btn-red' : 'btn-green';
+            const btnTeks = isLunas ? 'Ubah ke: Belum Bayar' : 'Ubah ke: Sudah Bayar';
+
+            // Tampilan Publik
+            gridPublik.innerHTML += `
+                <div class="student-item">
+                    <div class="student-header">
+                        <span class="student-name">${nama}</span>
+                        <span class="status-badge ${badgeClass}">${teksStatus}</span>
+                    </div>
+                </div>`;
+
+            // Tampilan Admin (Ada tombol ubah status)
+            gridAdmin.innerHTML += `
+                <div class="student-item">
+                    <div class="student-header">
+                        <span class="student-name">${nama}</span>
+                        <span class="status-badge ${badgeClass}">${teksStatus}</span>
+                    </div>
+                    <button class="btn-sm ${btnWarna}" style="width:100%; margin-top:5px;" onclick="toggleStatusBayar('${nama}')">${btnTeks}</button>
+                </div>`;
         });
 
-        // Simpan Data ke Firebase
-        const simpanData = () => {
-            const tanggal = inputTanggal.value;
-            const nama = inputNama.value.trim() || 'Hamba Allah'; 
-            const jumlahInput = parseInt(inputJumlah.value) || 0;
+        // Hitung total uang masuk pada minggu aktif
+        let totalUangMingguIni = totalOrangBayarMingguIni * NOMINAL_WIFI;
+        
+        document.getElementById('label-periode-aktif').textContent = `Total Terkumpul (${mingguAktif}):`;
+        document.getElementById('total-minggu-publik').textContent = formatRupiah(totalUangMingguIni);
 
-            if (!tanggal || jumlahInput <= 0) {
-                alert("Jumlah voucher minimal 1.");
-                return;
-            }
+        document.getElementById('label-periode-aktif-admin').textContent = `Total Terkumpul (${mingguAktif}):`;
+        document.getElementById('total-minggu-admin').textContent = formatRupiah(totalUangMingguIni);
+    }
 
-            // Path penyimpanan: KasirWiFi/Penjualan/YYYY-MM-DD/id_unik
-            const hariRef = ref(db, `KasirWiFi/Penjualan/${tanggal}`);
-            const dataBaruRef = push(hariRef); 
-            
-            set(dataBaruRef, {
-                nama: nama,
-                jumlah: jumlahInput,
-                totalBayar: jumlahInput * HARGA,
-                waktu: Date.now() 
+    // Fungsi klik tombol ubah status bayar oleh admin
+    window.toggleStatusBayar = (namaWarga) => {
+        const statusSekarang = semuaDataWifi[mingguAktif] ? semuaDataWifi[mingguAktif][namaWarga] : false;
+        
+        // Update data ke Firebase
+        update(ref(db, `KasWiFi/${mingguAktif}`), { [namaWarga]: !statusSekarang })
+            .catch(err => {
+                alert("Gagal mengubah status. Pastikan aturan database Firebase sudah diatur terbuka.");
             });
-
-            // Reset UI
-            inputNama.value = '';
-            inputJumlah.value = '1';
-            previewTotal.textContent = formatRupiah(HARGA);
-            inputNama.focus();
-        };
-
-        btnCatat.addEventListener('click', simpanData);
-        inputNama.addEventListener("keypress", (e) => { if (e.key === "Enter") simpanData(); });
-        inputJumlah.addEventListener("keypress", (e) => { if (e.key === "Enter") simpanData(); });
-
-        // Fungsi Hapus Data
-        window.hapusTransaksi = (tanggal, idUnik) => {
-            if(confirm("Yakin hapus pelanggan ini?")) {
-                remove(ref(db, `KasirWiFi/Penjualan/${tanggal}/${idUnik}`));
-            }
-        };
-
-        // Membaca Data dari Firebase (Otomatis terupdate setiap ada perubahan)
-        onValue(dbRef, (snapshot) => {
-            statusCloud.textContent = "🟢 Terhubung & Tersimpan";
-            statusCloud.classList.remove('offline');
-            daftarRiwayat.innerHTML = '';
-            
-            const dataPenjualan = snapshot.val();
-            let totalSemuaWaktu = 0;
-
-            if (!dataPenjualan) {
-                daftarRiwayat.innerHTML = '<div style="text-align:center; padding: 2rem 0; color:var(--text-muted);"><p>Belum ada catatan penjualan di Cloud</p></div>';
-                tampilTotalSemua.textContent = 'Rp 0';
-                return;
-            }
-
-            // Urutkan tanggal dari yang terbaru (Z-A)
-            const arrayTanggal = Object.keys(dataPenjualan).sort((a, b) => b.localeCompare(a));
-
-            arrayTanggal.forEach(tgl => {
-                const transaksiHariIni = dataPenjualan[tgl];
-                let totalUangHariIni = 0;
-                let totalVoucherHariIni = 0;
-                
-                // Ubah objek transaksi ke array dan urutkan berdasarkan waktu input terbaru
-                const arrTrx = Object.keys(transaksiHariIni).map(key => {
-                    return { id: key, ...transaksiHariIni[key] };
-                }).sort((a, b) => b.waktu - a.waktu);
-
-                let listHtml = '';
-                arrTrx.forEach(trx => {
-                    totalUangHariIni += trx.totalBayar;
-                    totalVoucherHariIni += trx.jumlah;
-                    totalSemuaWaktu += trx.totalBayar;
-
-                    listHtml += `
-                        <div class="trx-item">
-                            <div class="trx-info">
-                                <div class="avatar">${getInisial(trx.nama)}</div>
-                                <div>
-                                    <span class="trx-name">${trx.nama}</span>
-                                    <span class="trx-qty">${trx.jumlah} Voucher</span>
-                                </div>
-                            </div>
-                            <div class="trx-action">
-                                <span class="trx-price">${formatRupiah(trx.totalBayar)}</span>
-                                <button class="btn-del-sm" onclick="hapusTransaksi('${tgl}', '${trx.id}')" title="Hapus">×</button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                const dayCard = document.createElement('div');
-                dayCard.className = 'day-card';
-                dayCard.innerHTML = `
-                    <div class="day-header">
-                        <div>
-                            <div class="date">${formatTanggalTampil(tgl)}</div>
-                            <div class="vcr-count">Total ${totalVoucherHariIni} Voucher</div>
-                        </div>
-                        <div class="day-total">${formatRupiah(totalUangHariIni)}</div>
-                    </div>
-                    <div class="trx-list">
-                        ${listHtml}
-                    </div>
-                `;
-                
-                daftarRiwayat.appendChild(dayCard);
-            });
-
-            tampilTotalSemua.textContent = formatRupiah(totalSemuaWaktu);
-        }, (error) => {
-            statusCloud.textContent = "🔴 Terputus dari Cloud";
-            statusCloud.classList.add('offline');
-            console.error(error);
-        });
-
-    </script>
+    }
+</script>
 </body>
 </html>
